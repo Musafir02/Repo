@@ -1,0 +1,25 @@
+name: Sync Custom ROM
+
+on:
+  push:
+    branches:
+      - main  # This will run the workflow when you push to the main branch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest  # Specify the OS to use for the workflow
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Repo Tool
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y repo
+
+      - name: Sync ROM Source
+        run: |
+          mkdir -p ~/android/lineage
+          cd ~/android/lineage
+          repo init -u https://github.com/LineageOS/android.git -b lineage-21.0 --git-lfs
+          repo sync
